@@ -18,15 +18,21 @@ const db=mysql.createConnection({
     password:'root',
     database:'santhoshdb'
 })
+
 db.connect((err)=>{
     if(!err)
     {
         console.log('Db Connected....')
     }
-      else
+    else
     {
         console.log('Db not Connected....')
     }
+})
+
+// Home Route with Render Link
+app.get("/",(req,res)=>{
+    res.send("Server Running : https://mysql-crud-1-cyw5.onrender.com")
 })
 
 //create table
@@ -44,11 +50,11 @@ app.get("/createtable", (req, res) => {
     });
 });
 
-
 // Insert post
 app.post('/addpost', (req, res) => {
     let post = { title: req.body.title, body: req.body.body };
     let sql = 'INSERT INTO posts SET ?';
+
     db.query(sql, post, (err, result) => {
         if (err) throw err;
         res.send('Post added...');
@@ -58,28 +64,32 @@ app.post('/addpost', (req, res) => {
 //getPosts
 app.get("/getposts",(req,res)=>{
     let sql="select * from posts";
+
     db.query(sql,(err,result)=>{
-        if(err)
-            throw err;
+        if(err) throw err;
         res.send(result)
     })
 })
-//get post by id
 
+//get post by id
 app.get('/getpost/:id',(req,res)=>{
     let sql=`select * from posts where id=${req.params.id}`;
+
     db.query(sql,(err,result)=>{
-        if(err)throw err;
+        if(err) throw err;
         res.json(result);
     })
 })
+
 //update post
 app.put('/updatepost/:id',(req,res)=>{
     const {id}=req.params;
     const {title,body}=req.body;
+
     const sql=`update posts set title=?,body=? where id=?`;
+
     db.query(sql,[title,body,id],(err,result)=>{
-        if(err)throw err;
+        if(err) throw err;
         res.send('post updated..')
     })
 })
@@ -88,9 +98,10 @@ app.put('/updatepost/:id',(req,res)=>{
 app.delete('/deletepost/:id',(req,res)=>{
     const {id}=req.params;
     const sql=`delete from posts where id=?`;
+
     db.query(sql,[id],(err,result)=>{
-          if(err)throw err;
-          res.send('posted deleted')
+        if(err) throw err;
+        res.send('posted deleted')
     })
 })
 

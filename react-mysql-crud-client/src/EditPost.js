@@ -1,45 +1,49 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-const EditPost=()=>{
-    const [title,setTitle]=useState('');
-    const [body,setBody]=useState('');
-    const {id}=useParams();
-    const navigate=useNavigate();
-    useEffect(()=>{
-        const fetchPost=async()=>{
-            try{
-                const res=await axios.get(`http://localhost:3002/getpost/${id}`);
-                setTitle(res.data[0].title)
-                setBody(res.data[0].body)
-            }catch(err)
-            {
-                console.log(err)
+
+const EditPost = () => {
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    const API = "https://mysql-crud-1-cyw5.onrender.com";
+
+    useEffect(() => {
+        const fetchPost = async () => {
+            try {
+                const res = await axios.get(`${API}/getpost/${id}`);
+                setTitle(res.data[0].title);
+                setBody(res.data[0].body);
+            } catch (err) {
+                console.log(err);
             }
-        }
+        };
+
         fetchPost();
-    },[id]);
-    const handleSubmit=async(e)=>{
+    }, [id]);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try
-        {
-            await axios.put(`http://localhost:3002/updatepost/${id}`,{title,body});
-            navigate('/')
+
+        try {
+            await axios.put(`${API}/updatepost/${id}`, { title, body });
+            navigate('/');
+        } catch (err) {
+            console.log(err);
         }
-        catch(err)
-        {
-            console.log(err)
-        }
-    }
-    return(
-        
-         <div className="container mt-5">
+    };
+
+    return (
+        <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-header">
                             <h3>Edit Post</h3>
                         </div>
+
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
@@ -53,7 +57,8 @@ const EditPost=()=>{
                                         onChange={(e) => setTitle(e.target.value)}
                                     />
                                 </div>
-                                <div className="form-group">
+
+                                <div className="form-group mt-3">
                                     <label htmlFor="body">Body</label>
                                     <textarea
                                         className="form-control"
@@ -64,13 +69,17 @@ const EditPost=()=>{
                                         onChange={(e) => setBody(e.target.value)}
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary mt-3">Update Post</button>
+
+                                <button type="submit" className="btn btn-primary mt-3">
+                                    Update Post
+                                </button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
+
 export default EditPost;

@@ -8,7 +8,10 @@ const port = process.env.PORT || 3002;
 
 //middleware
 
-app.use(cors())
+app.use(cors({
+    origin:"https://mysql-crud-alpha.vercel.app"
+}))
+
 app.use(bodyparse.json())
 
 //Mysql
@@ -30,7 +33,7 @@ db.connect((err)=>{
     }
 })
 
-// Home Route with Render Link
+// Home Route
 app.get("/",(req,res)=>{
     res.send("Server Running : https://mysql-crud-1-cyw5.onrender.com")
 })

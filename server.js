@@ -4,7 +4,7 @@ const bodyparse=require("body-parser")
 const cors=require("cors")
 
 const app=express()
-const port=3002;
+const port = process.env.PORT || 3002;
 
 //middleware
 
@@ -94,6 +94,6 @@ app.delete('/deletepost/:id',(req,res)=>{
     })
 })
 
-app.listen(port,()=>{
-    console.log("server is Running.....")
-})
+app.listen(port, () => {
+    console.log("server is Running.....");
+});

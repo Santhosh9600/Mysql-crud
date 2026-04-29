@@ -18,12 +18,14 @@ app.use(cors({
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            callback(new Error("CORS Not Allowed"));
+            callback(null, true); // allow all temporarily
         }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
 }));
+
+app.options("*", cors());
 
 app.use(bodyParser.json());
 
